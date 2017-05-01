@@ -412,7 +412,9 @@ class Trace:
     self.strace = []
     self.mapped = []
 
-    threading.Thread(target=self.analysis_thread).start()
+    thread = threading.Thread(target=self.analysis_thread)
+    thread.setDaemon(True)
+    thread.start()
 
   def fetch_raw_memory(self, clnum, address, ln):
     return ''.join(map(chr, self.fetch_memory(clnum, address, ln).values()))

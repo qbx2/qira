@@ -42,13 +42,13 @@ from flask.ext.socketio import SocketIO, emit
 
 # http://stackoverflow.com/questions/8774958/keyerror-in-module-threading-after-a-successful-py-test-run
 import threading
-import sys
-if 'threading' in sys.modules:
-  del sys.modules['threading']
-import gevent
-import gevent.socket
-import gevent.monkey
-gevent.monkey.patch_all()
+#import sys
+#if 'threading' in sys.modules:
+#  del sys.modules['threading']
+#import gevent
+#import gevent.socket
+#import gevent.monkey
+#gevent.monkey.patch_all()
 # done with that
 
 app = Flask(__name__)
@@ -429,10 +429,11 @@ def run_server(largs, lprogram):
   qira_webstatic.init(lprogram)
 
   print "****** starting WEB SERVER on %s:%d" % (qira_config.HOST, qira_config.WEB_PORT)
-  threading.Thread(target=mwpoller).start()
+  thread = threading.Thread(target=mwpoller)
+  thread.setDaemon(True)
+  thread.start()
   try:
     socketio.run(app, host=qira_config.HOST, port=qira_config.WEB_PORT, log=open("/dev/null", "w"))
   except KeyboardInterrupt:
-    print "*** User raised KeyboardInterrupt"
     exit()
 

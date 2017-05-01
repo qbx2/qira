@@ -5,7 +5,8 @@ flask-socketio
 pillow
 pyelftools
 socketIO-client
-gevent
+# gevent
+eventlet
 pydot
 ipaddr
 capstone
